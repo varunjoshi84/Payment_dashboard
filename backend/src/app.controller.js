@@ -1,9 +1,9 @@
-import { Controller, Dependencies, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+const { Controller, Dependencies, Get } = require('@nestjs/common');
+const { AppService } = require('./app.service');
 
 @Controller()
 @Dependencies(AppService)
-export class AppController {
+class AppController {
   constructor(appService) {
     this.appService = appService;
   }
@@ -13,3 +13,5 @@ export class AppController {
     return this.appService.getHello();
   }
 }
+
+module.exports = { AppController };

@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+const { Injectable } = require('@nestjs/common');
 
 @Injectable()
-export class AppService {
+class AppService {
   getHello() {
-    return 'Hello World!';
+    return 'Hello World! Database connection configured for MongoDB.';
   }
 }
+
+module.exports = { AppService };

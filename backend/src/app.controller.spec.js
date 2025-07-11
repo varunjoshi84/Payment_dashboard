@@ -1,6 +1,6 @@
-import { Test } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+const { Test } = require('@nestjs/testing');
+const { AppController } = require('./app.controller');
+const { AppService } = require('./app.service');
 
 describe('AppController', () => {
   let appController;
@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return "Hello World! Database connection configured for MongoDB."', () => {
+      expect(appController.getHello()).toBe('Hello World! Database connection configured for MongoDB.');
     });
   });
 });
