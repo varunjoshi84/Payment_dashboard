@@ -236,57 +236,124 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                'Total Amount',
-                '₹${NumberFormat('#,##0.00').format(stats.totalAmount)}',
-                Icons.currency_rupee,
-                Colors.green,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildStatCard(
-                'Total Payments',
-                '${stats.totalPayments}',
-                Icons.payment,
-                Colors.blue,
-              ),
-            ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 500) {
+              // Stack stat cards vertically on very small screens
+              return Column(
+                children: [
+                  _buildStatCard(
+                    'Total Amount',
+                    '₹${NumberFormat('#,##0.00').format(stats.totalAmount)}',
+                    Icons.currency_rupee,
+                    Colors.green,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatCard(
+                    'Total Payments',
+                    '${stats.totalPayments}',
+                    Icons.payment,
+                    Colors.blue,
+                  ),
+                ],
+              );
+            } else {
+              // Side by side on larger screens
+              return Row(
+                children: [
+                  Expanded(
+                    child: _buildStatCard(
+                      'Total Amount',
+                      '₹${NumberFormat('#,##0.00').format(stats.totalAmount)}',
+                      Icons.currency_rupee,
+                      Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildStatCard(
+                      'Total Payments',
+                      '${stats.totalPayments}',
+                      Icons.payment,
+                      Colors.blue,
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                'Completed',
-                '${stats.completedPayments}',
-                Icons.check_circle,
-                Colors.green,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _buildStatCard(
-                'Pending',
-                '${stats.pendingPayments}',
-                Icons.schedule,
-                Colors.orange,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _buildStatCard(
-                'Failed',
-                '${stats.failedPayments}',
-                Icons.error,
-                Colors.red,
-              ),
-            ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 600) {
+              // Stack status cards vertically on small screens
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          'Completed',
+                          '${stats.completedPayments}',
+                          Icons.check_circle,
+                          Colors.green,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _buildStatCard(
+                          'Pending',
+                          '${stats.pendingPayments}',
+                          Icons.schedule,
+                          Colors.orange,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatCard(
+                    'Failed',
+                    '${stats.failedPayments}',
+                    Icons.error,
+                    Colors.red,
+                  ),
+                ],
+              );
+            } else {
+              // All three side by side on larger screens
+              return Row(
+                children: [
+                  Expanded(
+                    child: _buildStatCard(
+                      'Completed',
+                      '${stats.completedPayments}',
+                      Icons.check_circle,
+                      Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildStatCard(
+                      'Pending',
+                      '${stats.pendingPayments}',
+                      Icons.schedule,
+                      Colors.orange,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildStatCard(
+                      'Failed',
+                      '${stats.failedPayments}',
+                      Icons.error,
+                      Colors.red,
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ],
     );
@@ -620,14 +687,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         trailing: Container(
           constraints: const BoxConstraints(maxWidth: 80),
-          child: Chip(
-            label: Text(
-              payment.status.toUpperCase(),
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-              overflow: TextOverflow.ellipsis,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Chip(
+              label: Text(
+                payment.status.toUpperCase(),
+                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,
+              ),
+              backgroundColor: statusColor.withOpacity(0.1),
+              labelStyle: TextStyle(color: statusColor),
             ),
-            backgroundColor: statusColor.withOpacity(0.1),
-            labelStyle: TextStyle(color: statusColor),
           ),
         ),
       ),

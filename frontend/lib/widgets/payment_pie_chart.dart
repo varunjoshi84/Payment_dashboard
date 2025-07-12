@@ -67,7 +67,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return SizedBox(
       height: 200,
       child: Center(
         child: Column(
@@ -217,6 +217,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
                         fontSize: isSmallScreen ? 10 : 12,
                         color: Colors.grey.shade600,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
