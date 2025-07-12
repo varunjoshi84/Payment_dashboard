@@ -119,30 +119,29 @@ The system includes sample payment data that gets created automatically:
 
 ## 📸 Screenshots
 
-### Login Screen
-![Login Screen](screenshots/Screenshot%202025-07-12%20at%2012.30.17.png)
-*User authentication with email and password*
 
-### Dashboard  
-![Dashboard](screenshots/Screenshot%202025-07-12%20at%2012.37.27.png)
-*Payment statistics and overview with filtering options*
+![Database](screenshots/Screenshot%202025-07-12%20at%2012.30.17.png)
 
-### Payment List
+
+
+![](screenshots/Screenshot%202025-07-12%20at%2012.37.27.png)
+
+
+
 ![Payment List](screenshots/Screenshot%202025-07-12%20at%2012.38.33.png)
-*View all payments with status and method filters*
 
-### Create Payment
+
+
 ![Create Payment](screenshots/Screenshot%202025-07-12%20at%2012.38.44.png)
-*Add new payments with various methods*
 
-### Payment Details
+
+
 ![Payment Details](screenshots/Screenshot%202025-07-12%20at%2012.39.06.png)
-*Payment details and transaction information*
 
-### User Interface
+
+
 ![User Interface](screenshots/Screenshot%202025-07-12%20at%2012.39.22.png)
-*Clean and modern Flutter interface*
-*Add new payments with various methods*
+
 
 ## 🔧 Environment Variables
 
