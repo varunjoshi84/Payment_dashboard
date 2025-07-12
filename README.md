@@ -120,20 +120,28 @@ The system includes sample payment data that gets created automatically:
 ## Screenshots
 
 ### Login Screen
-![Login Screen](screenshots/login.png)
+![Login Screen](screenshots/Screenshot%202025-07-12%20at%2012.30.17.png)
 *User authentication with email and password*
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/Screenshot%202025-07-12%20at%2012.37.27.png)
 *Payment statistics and overview with filtering options*
 
+### Payment Analytics
+![Payment Analytics](screenshots/Screenshot%202025-07-12%20at%2012.38.33.png)
+*Pie charts showing payment status and method distribution*
+
 ### Payment List
-![Payment List](screenshots/payments.png)
+![Payment List](screenshots/Screenshot%202025-07-12%20at%2012.38.44.png)
 *View all payments with status and method filters*
 
 ### Create Payment
-![Create Payment](screenshots/create-payment.png)
+![Create Payment](screenshots/Screenshot%202025-07-12%20at%2012.39.06.png)
 *Add new payments with various methods*
+
+### Mobile View
+![Mobile View](screenshots/Screenshot%202025-07-12%20at%2012.39.22.png)
+*Responsive mobile layout with pie charts*
 
 ## Environment Variables
 
