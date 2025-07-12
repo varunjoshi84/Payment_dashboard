@@ -7,8 +7,8 @@ import '../models/payment_stats.dart';
 
 class ApiService {
   // Change this to your backend URL (for demo we'll handle errors gracefully)
-  static const String baseUrl = 'http://localhost:3000/api';
-  
+  static const String baseUrl = 'http://localhost:3002/api';
+
   static String? _token;
 
   // Get token from storage
@@ -43,14 +43,14 @@ class ApiService {
   }
 
   // Auth methods
-  static Future<Map<String, dynamic>> login(String email, String password) async {
+  static Future<Map<String, dynamic>> login(
+    String email,
+    String password,
+  ) async {
     final response = await http.post(
       Uri.parse('$baseUrl/auth/login'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-      }),
+      body: jsonEncode({'email': email, 'password': password}),
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -64,15 +64,15 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> register(String email, String password, String name) async {
+  static Future<Map<String, dynamic>> register(
+    String email,
+    String password,
+    String name,
+  ) async {
     final response = await http.post(
       Uri.parse('$baseUrl/auth/register'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-        'name': name,
-      }),
+      body: jsonEncode({'email': email, 'password': password, 'name': name}),
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -103,22 +103,22 @@ class ApiService {
   }
 
   // Payment methods
-  static Future<List<Payment>> getPayments({String? status, String? method}) async {
+  static Future<List<Payment>> getPayments({
+    String? status,
+    String? method,
+  }) async {
     final headers = await getHeaders();
     String url = '$baseUrl/payments';
-    
+
     final queryParams = <String, String>{};
     if (status != null) queryParams['status'] = status;
     if (method != null) queryParams['method'] = method;
-    
+
     if (queryParams.isNotEmpty) {
-      url += '?' + Uri(queryParameters: queryParams).query;
+      url += '?${Uri(queryParameters: queryParams).query}';
     }
 
-    final response = await http.get(
-      Uri.parse(url),
-      headers: headers,
-    );
+    final response = await http.get(Uri.parse(url), headers: headers);
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -182,7 +182,7 @@ class ApiService {
   static Future<void> seedPayments() async {
     final headers = await getHeaders();
     final response = await http.post(
-      Uri.parse('$baseUrl/seed/payments'),
+      Uri.parse('$baseUrl/payments/seed'),
       headers: headers,
     );
 

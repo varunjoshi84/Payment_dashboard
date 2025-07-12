@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/payment_provider.dart';
 
 class CreatePaymentScreen extends StatefulWidget {
-  const CreatePaymentScreen({Key? key}) : super(key: key);
+  const CreatePaymentScreen({super.key});
 
   @override
   State<CreatePaymentScreen> createState() => _CreatePaymentScreenState();
@@ -13,7 +13,7 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
-  String _selectedMethod = 'credit_card';
+  String _selectedMethod = 'credit-card';
 
   @override
   void dispose() {
@@ -25,8 +25,11 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
   Future<void> _createPayment() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
-    
+    final paymentProvider = Provider.of<PaymentProvider>(
+      context,
+      listen: false,
+    );
+
     final success = await paymentProvider.createPayment(
       amount: double.parse(_amountController.text),
       method: _selectedMethod,
@@ -69,23 +72,24 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                         children: [
                           Text(
                             'Payment Details',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 20),
-                          
+
                           TextFormField(
                             controller: _amountController,
                             decoration: InputDecoration(
                               labelText: 'Amount',
-                              prefixText: '\$ ',
-                              prefixIcon: const Icon(Icons.attach_money),
+                              prefixText: '₹ ',
+                              prefixIcon: const Icon(Icons.currency_rupee),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Please enter an amount';
@@ -98,7 +102,7 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          
+
                           DropdownButtonFormField<String>(
                             value: _selectedMethod,
                             decoration: InputDecoration(
@@ -110,19 +114,19 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                             ),
                             items: const [
                               DropdownMenuItem(
-                                value: 'credit_card',
+                                value: 'credit-card',
                                 child: Text('Credit Card'),
                               ),
                               DropdownMenuItem(
-                                value: 'debit_card',
+                                value: 'debit-card',
                                 child: Text('Debit Card'),
                               ),
                               DropdownMenuItem(
-                                value: 'paypal',
-                                child: Text('PayPal'),
+                                value: 'upi',
+                                child: Text('UPI'),
                               ),
                               DropdownMenuItem(
-                                value: 'bank_transfer',
+                                value: 'bank-transfer',
                                 child: Text('Bank Transfer'),
                               ),
                             ],
@@ -133,7 +137,7 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          
+
                           TextFormField(
                             controller: _descriptionController,
                             decoration: InputDecoration(
@@ -155,9 +159,9 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   if (paymentProvider.error != null) ...[
                     Container(
                       width: double.infinity,
@@ -182,12 +186,14 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                     ),
                     const SizedBox(height: 16),
                   ],
-                  
+
                   SizedBox(
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: paymentProvider.isLoading ? null : _createPayment,
+                      onPressed: paymentProvider.isLoading
+                          ? null
+                          : _createPayment,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade600,
                         foregroundColor: Colors.white,
@@ -200,9 +206,9 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                           : const Text('Create Payment'),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(

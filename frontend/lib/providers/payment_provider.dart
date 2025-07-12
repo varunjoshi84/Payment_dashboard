@@ -17,17 +17,41 @@ class PaymentProvider with ChangeNotifier {
   Future<void> loadPayments({String? status, String? method}) async {
     _setLoading(true);
     _error = null;
-    
+
     try {
+      print('Loading payments with filters: status=$status, method=$method');
       _payments = await ApiService.getPayments(status: status, method: method);
+      print('Loaded ${_payments.length} payments from backend');
       notifyListeners();
     } catch (e) {
+      print('Backend failed, using demo data: $e');
       // Fallback to demo data if backend fails
       _payments = _generateDemoPayments();
+      // Apply filters to demo data
+      _payments = _applyFilters(_payments, status: status, method: method);
+      print('Using ${_payments.length} demo payments after filtering');
       notifyListeners();
     } finally {
       _setLoading(false);
     }
+  }
+
+  List<Payment> _applyFilters(
+    List<Payment> payments, {
+    String? status,
+    String? method,
+  }) {
+    List<Payment> filtered = payments;
+
+    if (status != null) {
+      filtered = filtered.where((payment) => payment.status == status).toList();
+    }
+
+    if (method != null) {
+      filtered = filtered.where((payment) => payment.method == method).toList();
+    }
+
+    return filtered;
   }
 
   Future<void> loadStats() async {
@@ -54,7 +78,7 @@ class PaymentProvider with ChangeNotifier {
         userId: 'demo-user-id',
         amount: 1250.00,
         status: 'completed',
-        method: 'credit_card',
+        method: 'credit-card',
         description: 'Monthly subscription payment',
         createdAt: DateTime.now().subtract(const Duration(days: 2)),
       ),
@@ -63,7 +87,7 @@ class PaymentProvider with ChangeNotifier {
         userId: 'demo-user-id',
         amount: 890.50,
         status: 'pending',
-        method: 'paypal',
+        method: 'upi',
         description: 'Product purchase - Electronics',
         createdAt: DateTime.now().subtract(const Duration(hours: 5)),
       ),
@@ -72,7 +96,7 @@ class PaymentProvider with ChangeNotifier {
         userId: 'demo-user-id',
         amount: 2100.00,
         status: 'completed',
-        method: 'bank_transfer',
+        method: 'bank-transfer',
         description: 'Service fee payment',
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
       ),
@@ -81,7 +105,7 @@ class PaymentProvider with ChangeNotifier {
         userId: 'demo-user-id',
         amount: 345.75,
         status: 'failed',
-        method: 'debit_card',
+        method: 'debit-card',
         description: 'Failed transaction - insufficient funds',
         createdAt: DateTime.now().subtract(const Duration(hours: 12)),
       ),
@@ -90,7 +114,7 @@ class PaymentProvider with ChangeNotifier {
         userId: 'demo-user-id',
         amount: 5500.00,
         status: 'completed',
-        method: 'credit_card',
+        method: 'credit-card',
         description: 'Large purchase - Equipment',
         createdAt: DateTime.now().subtract(const Duration(days: 3)),
       ),
@@ -104,7 +128,7 @@ class PaymentProvider with ChangeNotifier {
   }) async {
     _setLoading(true);
     _error = null;
-    
+
     try {
       final payment = await ApiService.createPayment(
         amount: amount,

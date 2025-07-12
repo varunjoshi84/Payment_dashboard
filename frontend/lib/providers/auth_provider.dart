@@ -15,7 +15,7 @@ class AuthProvider with ChangeNotifier {
   Future<bool> login(String email, String password) async {
     _setLoading(true);
     _error = null;
-    
+
     try {
       // Demo mode for testing UI (fallback if backend fails)
       if (email == 'demo@test.com' && password == 'demo123') {
@@ -29,7 +29,7 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         return true;
       }
-      
+
       final response = await ApiService.login(email, password);
       if (response['user'] != null) {
         _user = User.fromJson(response['user']);
@@ -50,8 +50,9 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         return true;
       }
-      
-      _error = 'Backend connection failed. Use demo@test.com / demo123 for demo mode.';
+
+      _error =
+          'Backend connection failed. Use demo@test.com / demo123 for demo mode.';
       notifyListeners();
       return false;
     } finally {
@@ -62,7 +63,7 @@ class AuthProvider with ChangeNotifier {
   Future<bool> register(String email, String password, String name) async {
     _setLoading(true);
     _error = null;
-    
+
     try {
       final response = await ApiService.register(email, password, name);
       if (response['user'] != null) {

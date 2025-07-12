@@ -8,7 +8,7 @@ import 'create_payment_screen.dart';
 import 'login_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -27,7 +27,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _loadData() {
-    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+    final paymentProvider = Provider.of<PaymentProvider>(
+      context,
+      listen: false,
+    );
     paymentProvider.loadPayments(status: _statusFilter, method: _methodFilter);
     paymentProvider.loadStats();
   }
@@ -35,50 +38,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment Dashboard'),
+        title: const Text('Payment Dashboard v2.0'),
         backgroundColor: Colors.blue.shade600,
         foregroundColor: Colors.white,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadData,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
             onSelected: (value) async {
-              if (value == 'seed') {
-                await Provider.of<PaymentProvider>(context, listen: false).seedPayments();
-                _loadData();
-              } else if (value == 'logout') {
+              if (value == 'logout') {
                 await authProvider.logout();
                 if (mounted) {
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
                   );
                 }
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'seed',
-                child: Row(
-                  children: [
-                    Icon(Icons.data_object),
-                    SizedBox(width: 8),
-                    Text('Seed Sample Data'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'logout',
                 child: Row(
                   children: [
-                    Icon(Icons.logout),
-                    SizedBox(width: 8),
-                    Text('Logout'),
+                    Icon(Icons.logout, color: Colors.red.shade600),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.red.shade600),
+                    ),
                   ],
                 ),
               ),
@@ -88,9 +80,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const CreatePaymentScreen()),
-          ).then((_) => _loadData());
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (context) => const CreatePaymentScreen(),
+                ),
+              )
+              .then((_) => _loadData());
         },
         backgroundColor: Colors.blue.shade600,
         child: const Icon(Icons.add, color: Colors.white),
@@ -141,7 +137,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       child: Column(
                         children: [
-                          Icon(Icons.error, color: Colors.red.shade600, size: 48),
+                          Icon(
+                            Icons.error,
+                            color: Colors.red.shade600,
+                            size: 48,
+                          ),
                           const SizedBox(height: 8),
                           Text(
                             'Error: ${paymentProvider.error}',
@@ -159,13 +159,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.all(32),
                       child: Column(
                         children: [
-                          Icon(Icons.payment, size: 64, color: Colors.grey.shade400),
+                          Icon(
+                            Icons.payment,
+                            size: 64,
+                            color: Colors.grey.shade400,
+                          ),
                           const SizedBox(height: 16),
                           Text(
                             'No payments found',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(color: Colors.grey.shade600),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -178,13 +181,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ] else ...[
                   SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final payment = paymentProvider.payments[index];
-                        return _buildPaymentCard(payment);
-                      },
-                      childCount: paymentProvider.payments.length,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final payment = paymentProvider.payments[index];
+                      return _buildPaymentCard(payment);
+                    }, childCount: paymentProvider.payments.length),
                   ),
                 ],
               ],
@@ -197,15 +197,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildStatsCards(PaymentProvider paymentProvider) {
     final stats = paymentProvider.stats!;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Overview',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         Row(
@@ -213,8 +213,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: _buildStatCard(
                 'Total Amount',
-                '\$${NumberFormat('#,##0.00').format(stats.totalAmount)}',
-                Icons.attach_money,
+                '₹${NumberFormat('#,##0.00').format(stats.totalAmount)}',
+                Icons.currency_rupee,
                 Colors.green,
               ),
             ),
@@ -264,7 +264,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -309,9 +314,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Text(
               'Filters',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Row(
@@ -321,14 +326,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     decoration: const InputDecoration(
                       labelText: 'Status',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                     ),
                     value: _statusFilter,
                     items: [
-                      const DropdownMenuItem(value: null, child: Text('All Statuses')),
-                      const DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                      const DropdownMenuItem(value: 'completed', child: Text('Completed')),
-                      const DropdownMenuItem(value: 'failed', child: Text('Failed')),
+                      const DropdownMenuItem(
+                        value: null,
+                        child: Text('All Statuses'),
+                      ),
+                      const DropdownMenuItem(
+                        value: 'pending',
+                        child: Text('Pending'),
+                      ),
+                      const DropdownMenuItem(
+                        value: 'completed',
+                        child: Text('Completed'),
+                      ),
+                      const DropdownMenuItem(
+                        value: 'failed',
+                        child: Text('Failed'),
+                      ),
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -344,15 +364,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     decoration: const InputDecoration(
                       labelText: 'Method',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                     ),
                     value: _methodFilter,
                     items: [
-                      const DropdownMenuItem(value: null, child: Text('All Methods')),
-                      const DropdownMenuItem(value: 'credit_card', child: Text('Credit Card')),
-                      const DropdownMenuItem(value: 'debit_card', child: Text('Debit Card')),
-                      const DropdownMenuItem(value: 'paypal', child: Text('PayPal')),
-                      const DropdownMenuItem(value: 'bank_transfer', child: Text('Bank Transfer')),
+                      const DropdownMenuItem(
+                        value: null,
+                        child: Text('All Methods'),
+                      ),
+                      const DropdownMenuItem(
+                        value: 'credit-card',
+                        child: Text('Credit Card'),
+                      ),
+                      const DropdownMenuItem(
+                        value: 'debit-card',
+                        child: Text('Debit Card'),
+                      ),
+                      const DropdownMenuItem(value: 'upi', child: Text('UPI')),
+                      const DropdownMenuItem(
+                        value: 'bank-transfer',
+                        child: Text('Bank Transfer'),
+                      ),
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -373,7 +408,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildPaymentCard(Payment payment) {
     Color statusColor;
     IconData statusIcon;
-    
+
     switch (payment.status.toLowerCase()) {
       case 'completed':
         statusColor = Colors.green;
@@ -398,7 +433,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Icon(statusIcon, color: statusColor),
         ),
         title: Text(
-          '\$${NumberFormat('#,##0.00').format(payment.amount)}',
+          '₹${NumberFormat('#,##0.00').format(payment.amount)}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Column(

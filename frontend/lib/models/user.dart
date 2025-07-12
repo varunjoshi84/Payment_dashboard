@@ -19,7 +19,9 @@ class User {
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       role: json['role'] ?? 'user',
-      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+      createdAt: DateTime.parse(
+        json['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 

@@ -25,7 +25,9 @@ class Payment {
       status: json['status'] ?? 'pending',
       method: json['method'] ?? 'credit_card',
       description: json['description'] ?? '',
-      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+      createdAt: DateTime.parse(
+        json['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 

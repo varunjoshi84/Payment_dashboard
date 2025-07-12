@@ -4,7 +4,7 @@ import '../providers/auth_provider.dart';
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -87,13 +87,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 16),
                           Text(
                             'Payment Dashboard',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue.shade600,
-                            ),
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue.shade600,
+                                ),
                           ),
                           const SizedBox(height: 32),
-                          
+
                           if (!_isLoginMode) ...[
                             TextFormField(
                               controller: _nameController,
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 16),
                           ],
-                          
+
                           TextFormField(
                             controller: _emailController,
                             decoration: InputDecoration(
@@ -135,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          
+
                           TextFormField(
                             controller: _passwordController,
                             decoration: InputDecoration(
@@ -157,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           const SizedBox(height: 24),
-                          
+
                           if (authProvider.error != null) ...[
                             Container(
                               padding: const EdgeInsets.all(12),
@@ -173,7 +174,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Expanded(
                                     child: Text(
                                       authProvider.error!,
-                                      style: TextStyle(color: Colors.red.shade600),
+                                      style: TextStyle(
+                                        color: Colors.red.shade600,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -181,12 +184,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 16),
                           ],
-                          
+
                           SizedBox(
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton(
-                              onPressed: authProvider.isLoading ? null : _submit,
+                              onPressed: authProvider.isLoading
+                                  ? null
+                                  : _submit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue.shade600,
                                 foregroundColor: Colors.white,
@@ -195,12 +200,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               child: authProvider.isLoading
-                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
                                   : Text(_isLoginMode ? 'Login' : 'Register'),
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
+
                           TextButton(
                             onPressed: () {
                               setState(() {
@@ -209,19 +216,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               authProvider.clearError();
                             },
                             child: Text(
-                              _isLoginMode 
+                              _isLoginMode
                                   ? 'Don\'t have an account? Register'
                                   : 'Already have an account? Login',
                             ),
-                          ),
-                          
-                          const SizedBox(height: 16),
-                          Text(
-                            'Demo Credentials:\nEmail: demo@test.com\nPassword: demo123\n\nBackend Test:\nEmail: admin@test.com\nPassword: admin123',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
-                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
