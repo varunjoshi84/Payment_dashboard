@@ -247,10 +247,15 @@ async function bootstrap() {
   
   app.setGlobalPrefix('api');
   
-  const port = 3002;
+  const port = process.env.PORT || 3002;
   await app.listen(port);
   
-  console.log(`🚀 Payment Dashboard API running on http://localhost:${port}/api`);
+  console.log(`🚀 Payment Dashboard API running on port ${port}`);
 }
 
-bootstrap().catch(err => console.error('Failed to start server:', err));
+export { bootstrap };
+
+// For direct execution
+if (require.main === module) {
+  bootstrap().catch(err => console.error('Failed to start server:', err));
+}
