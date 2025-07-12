@@ -2,12 +2,12 @@
   "name": "payment-dashboard-backend",
   "version": "1.0.0",
   "description": "Payment Dashboard Backend API",
-  "main": "dist/main.js",
+  "main": "dist/main-simple.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/main.js",
-    "start:dev": "nodemon --exec ts-node src/main.ts",
-    "start:prod": "node dist/main.js",
+    "start": "node dist/main-simple.js",
+    "start:dev": "nodemon --exec ts-node src/main-simple.ts",
+    "start:prod": "node dist/main-simple.js",
     "test": "jest"
   },
   "dependencies": {
