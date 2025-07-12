@@ -6,8 +6,8 @@ import '../models/payment.dart';
 import '../models/payment_stats.dart';
 
 class ApiService {
-  // Change this to your backend URL (for demo we'll handle errors gracefully)
-  static const String baseUrl = 'http://localhost:3002/api';
+  // Production API URL - Live backend on Render
+  static const String baseUrl = 'https://payment-dashboard-z1s2.onrender.com/api';
 
   static String? _token;
 
