@@ -2,13 +2,13 @@
 
 A full-stack payment management application with **NestJS backend** (TypeScript) and **Flutter frontend**.
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **Node.js** (v16+)
 - **Flutter** (latest stable)
 - **MongoDB** (local or Atlas)
 
-## 🛠️ Project Structure
+## Project Structure
 
 ```
 payment_dashboard/
@@ -17,7 +17,7 @@ payment_dashboard/
 └── README.md
 ```
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone Repository
 ```bash
@@ -42,7 +42,7 @@ flutter run          # For mobile
 flutter run -d chrome # For web
 ```
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### MongoDB Collections
 
@@ -71,7 +71,7 @@ flutter run -d chrome # For web
 }
 ```
 
-## 🔐 Sample Login Credentials
+## Sample Login Credentials
 
 **Test User Account:**
 - Email: `admin@test.com`
@@ -79,7 +79,7 @@ flutter run -d chrome # For web
 
 **Note:** You need to register this account first through the app, then use these credentials to login.
 
-## 📊 Sample Payment Data (Seed)
+## Sample Payment Data (Seed)
 
 The system includes sample payment data that gets created automatically:
 
@@ -117,7 +117,7 @@ The system includes sample payment data that gets created automatically:
 **Payment Status:** Pending, Completed, Failed  
 **Currency:** Indian Rupees (₹)
 
-## 📸 Screenshots
+## Screenshots
 
 ### Login Screen
 ![Login Screen](screenshots/login.png)
@@ -135,7 +135,7 @@ The system includes sample payment data that gets created automatically:
 ![Create Payment](screenshots/create-payment.png)
 *Add new payments with various methods*
 
-## 🔧 Environment Variables
+## Environment Variables
 
 Create `.env` file in backend directory:
 ```env
@@ -144,7 +144,7 @@ JWT_SECRET=your-super-secret-jwt-key-here
 MONGODB_URI=mongodb://localhost:27017/payment_dashboard
 ```
 
-## 🚀 Features
+## Features
 
 - JWT Authentication
 - Payment Management (CRUD)

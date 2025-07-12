@@ -6,6 +6,7 @@ import '../providers/payment_provider.dart';
 import '../models/payment.dart';
 import 'create_payment_screen.dart';
 import 'login_screen.dart';
+import 'backend_info_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -49,7 +50,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
             onSelected: (value) async {
-              if (value == 'logout') {
+              if (value == 'backend_info') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const BackendInfoScreen(),
+                  ),
+                );
+              } else if (value == 'logout') {
                 await authProvider.logout();
                 if (mounted) {
                   Navigator.of(context).pushReplacement(
@@ -61,6 +68,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
             itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'backend_info',
+                child: Row(
+                  children: [
+                    Icon(Icons.dns, color: Colors.blue.shade600),
+                    const SizedBox(width: 8),
+                    const Text('Backend Info'),
+                  ],
+                ),
+              ),
               PopupMenuItem(
                 value: 'logout',
                 child: Row(
@@ -389,7 +406,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             value: 'debit-card',
                             child: Text('Debit Card'),
                           ),
-                          const DropdownMenuItem(value: 'upi', child: Text('UPI')),
+                          const DropdownMenuItem(
+                            value: 'upi',
+                            child: Text('UPI'),
+                          ),
                           const DropdownMenuItem(
                             value: 'bank-transfer',
                             child: Text('Bank Transfer'),
@@ -470,7 +490,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               value: 'debit-card',
                               child: Text('Debit Card'),
                             ),
-                            const DropdownMenuItem(value: 'upi', child: Text('UPI')),
+                            const DropdownMenuItem(
+                              value: 'upi',
+                              child: Text('UPI'),
+                            ),
                             const DropdownMenuItem(
                               value: 'bank-transfer',
                               child: Text('Bank Transfer'),
@@ -545,12 +568,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.credit_card, size: 16, color: Colors.grey.shade600),
+                    Icon(
+                      Icons.credit_card,
+                      size: 16,
+                      color: Colors.grey.shade600,
+                    ),
                     const SizedBox(width: 4),
                     Flexible(
                       child: Text(
                         payment.method.replaceAll('_', ' ').toUpperCase(),
-                        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -564,7 +594,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Flexible(
                       child: Text(
                         DateFormat('MMM d, y').format(payment.createdAt),
-                        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

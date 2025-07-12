@@ -4,10 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import '../models/payment.dart';
 import '../models/payment_stats.dart';
+import '../config/api_config.dart';
 
 class ApiService {
-  // Production API URL - Live backend on Render
-  static const String baseUrl = 'https://payment-dashboard-z1s2.onrender.com/api';
+  // Dynamic API URL based on configuration
+  static String get baseUrl => ApiConfig.baseUrl;
 
   static String? _token;
 
