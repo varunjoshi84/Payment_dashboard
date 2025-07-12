@@ -287,6 +287,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.grey.shade600,
                     ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
               ],
@@ -298,6 +300,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ],
         ),
@@ -319,85 +323,171 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText: 'Status',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+            // Fixed: Use Column on smaller screens, Row on larger screens
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 600) {
+                  // Stack filters vertically on small screens
+                  return Column(
+                    children: [
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Status',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                        value: _statusFilter,
+                        items: [
+                          const DropdownMenuItem(
+                            value: null,
+                            child: Text('All Statuses'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'pending',
+                            child: Text('Pending'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'completed',
+                            child: Text('Completed'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'failed',
+                            child: Text('Failed'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _statusFilter = value;
+                          });
+                          _loadData();
+                        },
                       ),
-                    ),
-                    value: _statusFilter,
-                    items: [
-                      const DropdownMenuItem(
-                        value: null,
-                        child: Text('All Statuses'),
-                      ),
-                      const DropdownMenuItem(
-                        value: 'pending',
-                        child: Text('Pending'),
-                      ),
-                      const DropdownMenuItem(
-                        value: 'completed',
-                        child: Text('Completed'),
-                      ),
-                      const DropdownMenuItem(
-                        value: 'failed',
-                        child: Text('Failed'),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Method',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                        value: _methodFilter,
+                        items: [
+                          const DropdownMenuItem(
+                            value: null,
+                            child: Text('All Methods'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'credit-card',
+                            child: Text('Credit Card'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'debit-card',
+                            child: Text('Debit Card'),
+                          ),
+                          const DropdownMenuItem(value: 'upi', child: Text('UPI')),
+                          const DropdownMenuItem(
+                            value: 'bank-transfer',
+                            child: Text('Bank Transfer'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _methodFilter = value;
+                          });
+                          _loadData();
+                        },
                       ),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        _statusFilter = value;
-                      });
-                      _loadData();
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText: 'Method',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+                  );
+                } else {
+                  // Use Row layout on larger screens
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'Status',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
+                          value: _statusFilter,
+                          items: [
+                            const DropdownMenuItem(
+                              value: null,
+                              child: Text('All Statuses'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'pending',
+                              child: Text('Pending'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'completed',
+                              child: Text('Completed'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'failed',
+                              child: Text('Failed'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _statusFilter = value;
+                            });
+                            _loadData();
+                          },
+                        ),
                       ),
-                    ),
-                    value: _methodFilter,
-                    items: [
-                      const DropdownMenuItem(
-                        value: null,
-                        child: Text('All Methods'),
-                      ),
-                      const DropdownMenuItem(
-                        value: 'credit-card',
-                        child: Text('Credit Card'),
-                      ),
-                      const DropdownMenuItem(
-                        value: 'debit-card',
-                        child: Text('Debit Card'),
-                      ),
-                      const DropdownMenuItem(value: 'upi', child: Text('UPI')),
-                      const DropdownMenuItem(
-                        value: 'bank-transfer',
-                        child: Text('Bank Transfer'),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'Method',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
+                          value: _methodFilter,
+                          items: [
+                            const DropdownMenuItem(
+                              value: null,
+                              child: Text('All Methods'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'credit-card',
+                              child: Text('Credit Card'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'debit-card',
+                              child: Text('Debit Card'),
+                            ),
+                            const DropdownMenuItem(value: 'upi', child: Text('UPI')),
+                            const DropdownMenuItem(
+                              value: 'bank-transfer',
+                              child: Text('Bank Transfer'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _methodFilter = value;
+                            });
+                            _loadData();
+                          },
+                        ),
                       ),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        _methodFilter = value;
-                      });
-                      _loadData();
-                    },
-                  ),
-                ),
-              ],
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -435,39 +525,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: Text(
           '₹${NumberFormat('#,##0.00').format(payment.amount)}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          overflow: TextOverflow.ellipsis,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text(payment.description),
+            Text(
+              payment.description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
             const SizedBox(height: 4),
-            Row(
+            // Fixed: Use Wrap instead of Row to prevent overflow
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
               children: [
-                Icon(Icons.credit_card, size: 16, color: Colors.grey.shade600),
-                const SizedBox(width: 4),
-                Text(
-                  payment.method.replaceAll('_', ' ').toUpperCase(),
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.credit_card, size: 16, color: Colors.grey.shade600),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        payment.method.replaceAll('_', ' ').toUpperCase(),
+                        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
-                const SizedBox(width: 4),
-                Text(
-                  DateFormat('MMM d, y').format(payment.createdAt),
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        DateFormat('MMM d, y').format(payment.createdAt),
+                        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ],
         ),
-        trailing: Chip(
-          label: Text(
-            payment.status.toUpperCase(),
-            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+        trailing: Container(
+          constraints: const BoxConstraints(maxWidth: 80),
+          child: Chip(
+            label: Text(
+              payment.status.toUpperCase(),
+              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+            ),
+            backgroundColor: statusColor.withOpacity(0.1),
+            labelStyle: TextStyle(color: statusColor),
           ),
-          backgroundColor: statusColor.withOpacity(0.1),
-          labelStyle: TextStyle(color: statusColor),
         ),
       ),
     );

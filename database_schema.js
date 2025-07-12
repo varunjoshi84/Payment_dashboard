@@ -1,9 +1,9 @@
 // Payment Dashboard - MongoDB Schema Dump
 // Database: payment_dashboard
 
-// ===========================================
+
 // USERS COLLECTION
-// ===========================================
+
 
 db.createCollection("users", {
   validator: {
@@ -35,9 +35,9 @@ db.createCollection("users", {
 // Create unique index on email
 db.users.createIndex({ "email": 1 }, { unique: true });
 
-// ===========================================
+
 // PAYMENTS COLLECTION  
-// ===========================================
+
 
 db.createCollection("payments", {
   validator: {
@@ -87,9 +87,9 @@ db.payments.createIndex({ "status": 1 });
 db.payments.createIndex({ "method": 1 });
 db.payments.createIndex({ "createdAt": -1 });
 
-// ===========================================
+
 // SAMPLE DATA INSERTION
-// ===========================================
+
 
 // Insert sample user (password: "password123" hashed with bcrypt)
 db.users.insertOne({
@@ -151,9 +151,9 @@ db.payments.insertMany([
   }
 ]);
 
-// ===========================================
+
 // USEFUL QUERIES
-// ===========================================
+
 
 // Get all payments for a user
 db.payments.find({user: userId}).sort({createdAt: -1});
@@ -181,7 +181,7 @@ db.payments.find({
   method: "upi"
 }).sort({createdAt: -1});
 
-console.log("✅ Payment Dashboard MongoDB schema and sample data created successfully!");
-console.log("📊 Collections: users, payments");
-console.log("👤 Sample user: admin@test.com (password: password123)");
-console.log("💳 Sample payments: 5 payments with different methods and statuses");
+console.log("Payment Dashboard MongoDB schema and sample data created successfully!");
+console.log(" Collections: users, payments");
+console.log(" Sample user: admin@test.com (password: password123)");
+console.log("Sample payments: 5 payments with different methods and statuses");
