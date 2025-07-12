@@ -28,25 +28,33 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Title section - simplified
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.chartType == 'status' 
-                      ? 'Payment Status Distribution' 
-                      : 'Payment Method Distribution',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    widget.chartType == 'status'
+                        ? 'Payment Status Distribution'
+                        : 'Payment Method Distribution',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${widget.payments.length} payments',
+                    '${widget.payments.length}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.blue.shade700,
@@ -57,9 +65,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
               ],
             ),
             const SizedBox(height: 16),
-            widget.payments.isEmpty
-                ? _buildEmptyState()
-                : _buildChart(),
+            widget.payments.isEmpty ? _buildEmptyState() : _buildChart(),
           ],
         ),
       ),
@@ -68,7 +74,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
 
   Widget _buildEmptyState() {
     return SizedBox(
-      height: 200,
+      height: 280,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -81,10 +87,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
             const SizedBox(height: 8),
             Text(
               'No payments to display',
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
             ),
           ],
         ),
@@ -94,54 +97,53 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
 
   Widget _buildChart() {
     final data = _getChartData();
-    
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isSmallScreen = constraints.maxWidth < 600;
-        
+
         return Column(
           children: [
             // Pie Chart
             SizedBox(
-              height: isSmallScreen ? 200 : 250,
+              height: isSmallScreen ? 280 : 350,
               child: Row(
                 children: [
                   Expanded(
-                    flex: isSmallScreen ? 3 : 2,
+                    flex: 2,
                     child: PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
+                          touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
+                                setState(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    touchedIndex = -1;
+                                    return;
+                                  }
+                                  touchedIndex = pieTouchResponse
+                                      .touchedSection!
+                                      .touchedSectionIndex;
+                                });
+                              },
                         ),
                         borderData: FlBorderData(show: false),
                         sectionsSpace: 2,
-                        centerSpaceRadius: isSmallScreen ? 30 : 40,
-                        sections: _buildPieChartSections(data),
+                        centerSpaceRadius: isSmallScreen ? 40 : 60,
+                        sections: _buildPieChartSections(data, isSmallScreen),
                       ),
                     ),
                   ),
                   if (!isSmallScreen) ...[
                     const SizedBox(width: 20),
-                    Expanded(
-                      flex: 1,
-                      child: _buildLegend(data, isSmallScreen),
-                    ),
+                    Expanded(flex: 1, child: _buildLegend(data, isSmallScreen)),
                   ],
                 ],
               ),
             ),
-            
+
             // Legend for small screens
             if (isSmallScreen) ...[
               const SizedBox(height: 16),
@@ -153,12 +155,19 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
     );
   }
 
-  List<PieChartSectionData> _buildPieChartSections(Map<String, ChartData> data) {
+  List<PieChartSectionData> _buildPieChartSections(
+    Map<String, ChartData> data, [
+    bool isSmallScreen = false,
+  ]) {
     return data.entries.map((entry) {
       final index = data.keys.toList().indexOf(entry.key);
       final isTouched = index == touchedIndex;
-      final fontSize = isTouched ? 16.0 : 14.0;
-      final radius = isTouched ? 65.0 : 55.0;
+      final fontSize = isSmallScreen
+          ? (isTouched ? 12.0 : 10.0)
+          : (isTouched ? 16.0 : 14.0);
+      final radius = isSmallScreen
+          ? (isTouched ? 65.0 : 55.0)
+          : (isTouched ? 85.0 : 75.0);
 
       return PieChartSectionData(
         color: entry.value.color,
@@ -170,10 +179,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
           fontWeight: FontWeight.bold,
           color: Colors.white,
           shadows: [
-            Shadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 2,
-            ),
+            Shadow(color: Colors.black.withOpacity(0.3), blurRadius: 2),
           ],
         ),
       );
@@ -199,7 +205,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
                 ),
               ),
               const SizedBox(width: 8),
-              Flexible(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -231,9 +237,9 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
 
   Map<String, ChartData> _getChartData() {
     final Map<String, int> counts = {};
-    
+
     for (final payment in widget.payments) {
-      final key = widget.chartType == 'status' 
+      final key = widget.chartType == 'status'
           ? _formatStatus(payment.status)
           : _formatMethod(payment.method);
       counts[key] = (counts[key] ?? 0) + 1;
@@ -247,7 +253,7 @@ class _PaymentPieChartState extends State<PaymentPieChart> {
       final color = widget.chartType == 'status'
           ? _getStatusColor(key)
           : _getMethodColor(key);
-      
+
       result[key] = ChartData(
         value: value,
         percentage: percentage,

@@ -126,14 +126,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
 
                 // Pie Charts Section
-                if (paymentProvider.payments.isNotEmpty) ...[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _buildPieChartsSection(paymentProvider.payments),
-                    ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildPieChartsSection(paymentProvider.payments),
                   ),
-                ],
+                ),
 
                 // Filters Section
                 SliverToBoxAdapter(
@@ -692,7 +690,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Chip(
               label: Text(
                 payment.status.toUpperCase(),
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
               backgroundColor: statusColor.withOpacity(0.1),
@@ -710,9 +711,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         Text(
           'Analytics',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         LayoutBuilder(
@@ -740,15 +741,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // On smaller screens, stack charts vertically
               return Column(
                 children: [
-                  PaymentPieChart(
-                    payments: payments,
-                    chartType: 'status',
-                  ),
+                  PaymentPieChart(payments: payments, chartType: 'status'),
                   const SizedBox(height: 12),
-                  PaymentPieChart(
-                    payments: payments,
-                    chartType: 'method',
-                  ),
+                  PaymentPieChart(payments: payments, chartType: 'method'),
                 ],
               );
             }
