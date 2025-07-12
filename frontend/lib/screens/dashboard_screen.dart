@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../providers/auth_provider.dart';
 import '../providers/payment_provider.dart';
 import '../models/payment.dart';
+import '../widgets/payment_pie_chart.dart';
 import 'create_payment_screen.dart';
 import 'login_screen.dart';
 import 'backend_info_screen.dart';
@@ -120,6 +121,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Container(
                       margin: const EdgeInsets.all(16),
                       child: _buildStatsCards(paymentProvider),
+                    ),
+                  ),
+                ],
+
+                // Pie Charts Section
+                if (paymentProvider.payments.isNotEmpty) ...[
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _buildPieChartsSection(paymentProvider.payments),
                     ),
                   ),
                 ],
@@ -620,6 +631,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPieChartsSection(List<Payment> payments) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Analytics',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // On larger screens, show charts side by side
+            if (constraints.maxWidth > 800) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: PaymentPieChart(
+                      payments: payments,
+                      chartType: 'status',
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: PaymentPieChart(
+                      payments: payments,
+                      chartType: 'method',
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              // On smaller screens, stack charts vertically
+              return Column(
+                children: [
+                  PaymentPieChart(
+                    payments: payments,
+                    chartType: 'status',
+                  ),
+                  const SizedBox(height: 12),
+                  PaymentPieChart(
+                    payments: payments,
+                    chartType: 'method',
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }
